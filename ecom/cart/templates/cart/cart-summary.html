@@ -1,0 +1,241 @@
+{% extends "store/base.html" %}
+{% include "store/base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% block content %}
+
+
+<main class="pt-5">
+    
+    <div class="container">
+      
+      <h1 class="h5"> Shopping cart </h1>
+
+	<hr>
+
+  {% for item in cart %}
+
+  {% with product=item.product %}
+  
+
+      <br>
+
+      <div class="row mb-4 border product-item">
+        
+        <div class="col-md-3 col-lg-2 order-md-first bg-light">
+        
+            <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image" src="{{product.image.url}}"> 
+        
+        </div>
+
+        
+        <div class="col-md-9 col-lg-10 ps-md-3 ps-lg-10">
+          
+          <a href="{{ category.get_absolute_url }}" class="text-info text-decoration-none text-reset"> 
+            <h1 class="h5 pt-2"> {{product.title | capfirst}} </h1>
+          
+          </a>
+          
+          <div class="border">
+            
+            <div class="col border-bottom">
+              
+                <div class="row p-3">
+              
+                <div class="col-6"> Product </div>
+              
+                <div class="col-6 text-end"><span class="h6 fw-bold">$ {{ product.price|mul:item.quantity }} </span></div>
+            
+              </div>
+            
+            </div>
+            
+            <div class="col">
+              
+              <div class="row p-3">
+                
+                <div class="col-12">
+                  
+                  <label for="select">Qty</label>
+
+                  &nbsp; 
+                  
+                  <select id="select{{ product.id }}">
+                  
+                    <option selected>
+                  
+                        {{item.quantity}}
+                  
+                    </option>
+                  
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  
+                  </select>
+                  
+                  <br> <br>
+
+                  <button type="button" data-index="{{ product.id }}"
+                    class="btn btn-primary btn-sm update-button">
+                    Update
+                  
+                  </button>
+                  
+                  &nbsp;
+
+                  <button type="button" data-index="{{ product.id }}"
+                    class="btn btn-danger btn-sm delete-button">
+                    Delete
+        
+                  </button>
+        
+
+                </div>
+        
+            </div>
+        
+            </div>
+    
+            </div>
+    
+        </div>
+      
+    </div>
+
+    {% endwith %}
+
+    {% endfor %}
+      
+
+
+      <div class="col-12 text-end">
+ 
+        <div class="h6 fw-bold"> Sub total: $ 
+          <div id="total" class="d-inline-flex">  
+            {{ cart.get_total }}
+
+          </div>
+          <br>
+          <a href="{% url 'checkout' %}" class="btn btn-primary my-2">&nbsp;
+            Checkout shopping
+          </a>
+
+        </div>
+ 
+      </div>
+ 
+
+    </div>
+    <br>
+
+  </br>
+
+ </main>
+
+ <script>
+
+  //delete button
+  $(document).ready(function() {
+    // Attach a click event handler to all buttons with the class 'delete-button'
+    $(document).on('click', '.delete-button', function() {
+        var product_id = $(this).data('index'); // Retrieve product ID from data-index attribute
+        console.log(product_id)
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'cart_delete' %}", // Make sure 'cart_delete' is defined in your Django URLs
+            data: {
+                product: product_id, // Send the product ID to the server
+                csrfmiddlewaretoken: "{{ csrf_token }}" , // Include CSRF token
+            },
+            success: function(data) {
+              location.reload();
+                // Update the cart quantity dynamically
+                document.getElementById("cart-qty").textContent = data.qty;
+                document.getElementById("total").textContent = data.product;
+                
+                // Optionally, remove the deleted product row from the DOM
+                $(`button[data-index='${product_id}']`).closest('.product-row').remove();
+
+                alert('Product removed from cart');
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText); // Log any errors
+                alert('An error occurred while removing the product');
+            }
+        });
+    });
+});
+
+//update button
+{% comment %} $(document).ready(function () {
+  $(document).on('click', '.update-button', function (e) {
+      e.preventDefault();
+      var productid = $(this).data('index');
+      var quantity = $('#select' + productid + 'option:selected').text(); // ดึงค่าจาก dropdown
+
+      // ตรวจสอบว่าค่า quantity ไม่ว่างและเป็นตัวเลข
+      if (!quantity || isNaN(quantity) || parseInt(quantity) <= 0) {
+          alert('Please select a valid quantity');
+          return;
+      }
+
+      $.ajax({
+          type: 'POST',
+          url: "{% url 'cart_update' %}",
+          data: {
+              productid: productid,
+              quantity: quantity,
+              csrfmiddlewaretoken: "{{ csrf_token }}",
+          },
+          success: function (data) {
+              document.getElementById("cart-qty").textContent = data.qty;
+              document.getElementById("total").textContent = data.total;
+              alert('Product quantity updated successfully');
+          },
+          error: function (xhr, status, error) {
+              console.error(xhr.responseText);
+              alert('Error updating product quantity');
+          },
+      });
+  });
+}); {% endcomment %}
+$(document).ready(function() {
+  $(document).on('click', '.update-button', function(e) {
+    e.preventDefault();
+    var theproductid = $(this).data('index');
+    
+
+    $.ajax({
+      type: 'POST',
+      url: "{% url "cart_update" %}",
+      data: {
+        productid: $(this).data('index'),
+        quantity: $('#select' + theproductid).val(),
+        csrfmiddlewaretoken: "{{ csrf_token }}" ,
+        action : 'post'
+        },
+        success: function(data) {
+          location.reload(true);
+          document.getElementById("cart-qty").textContent = data.qty;
+          document.getElementById("total").textContent = data.total;
+          alert('Product quantity updated');
+          },
+          error: function(xhr, status, error) {
+            console.log(xhr.responseText);
+            alert('An error occurred while updating the product quantity');
+            }
+            });
+            });
+          });
+
+
+
+
+ </script>
+
+
+
+{% endblock %}
+

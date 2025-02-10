@@ -1,0 +1,44 @@
+
+{% include "store/base.html" %}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block pagestyle %}
+    <style>
+        body {
+            background-color: gray; 
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<body>
+    <br>
+    <div class="container bg-white shadow-md p-5 form-layout">
+        
+            <h3>delete acc </h3>
+            <hr>
+            <p>r u sure to delete acc?</p>
+            <br>
+            <form method="POST" autocomplete="off">
+                {% csrf_token %}
+                
+                <button type="submit" class="btn btn-danger btn-lg w-100 btn-block p-2"> 
+                    &nbsp; delete acc
+                </button>
+                <br> <br>
+                <a class="btn btn-success navbar-btn text-white" type="button"  href="{% url 'profile_manage'%}"> back to manage acc </a>
+                
+            </form>
+ 
+        
+    </div>
+</body>
+
+<br> <br>
+
+
+
+{% endblock %}
+

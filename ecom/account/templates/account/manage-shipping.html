@@ -1,0 +1,55 @@
+{% include "store/base.html" %}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    body {
+        background-color: gray; 
+    }
+</style>
+<body>
+    <br>
+    <div class="container bg-white shadow-md p-5 form-layout">
+        
+            <h3>manage shippping </h3>
+            <hr>
+            <h5>pls fil in ur shipping address</h5>
+            <br>
+            <br>
+            <form method="POST" autocomplete="off">
+                {% csrf_token %}
+                {% comment %} {{form.id|as_crispy_field}}
+                <br><br> {% endcomment %}
+                {{form.full_name|as_crispy_field}}
+                <br><br>
+                {{form.email|as_crispy_field}}
+                <br><br>
+                {{form.address1|as_crispy_field}}
+                <br><br>
+                {{form.address2|as_crispy_field}}
+                <br><br>
+                {{form.city|as_crispy_field}}
+                <br><br>
+                {{form.state|as_crispy_field}}
+                <br><br>
+                {{form.zipcode|as_crispy_field}}
+                <br><br>
+                <button type="submit" class="btn btn-custom mt-3"> 
+                    &nbsp; update shipping
+                </button>
+                <br><br>
+
+            </form>
+ 
+        
+    </div>
+</body>
+
+<br> <br>
+
+
+
+{% endblock %}
+

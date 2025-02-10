@@ -1,0 +1,83 @@
+
+{% include "store/base.html" %}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block pagestyle %}
+    <style>
+        body {
+            background-color: gray; 
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<body>
+    <div class="container bg-white shadow-md p-5 form-layout">
+        <h2>profile management</h2>
+        <hr>
+
+    </div>
+    <br>
+
+    <div class="container bg-white shadow-md p-5 form-layout">
+
+        <a href="javascript:history.back()" style="text-decoration: none; color: black;">
+            <i class="fa fa-long-arrow-left" aria-hidden="true" style="font-size: 20px;"> back </i>
+        </a>
+
+        <br> <br>
+            <h3>manage acc </h3>
+            <h5>user and email can manage on here</h5>
+            <br>
+            <br>
+            <form method="POST" autocomplete="off">
+                {% csrf_token %}
+                {{user_form.username|as_crispy_field}}
+                <br><br>
+                {{user_form.email|as_crispy_field}}
+                <br><br>
+                <div class="form-group">
+                    {{ password_form.new_password.label_tag }}
+                    {{ password_form.new_password }}
+                </div>
+                <div class="form-group">
+                    {{ password_form.confirm_password.label_tag }}
+                    {{ password_form.confirm_password }}
+                </div>
+                <button type="submit" class="btn btn-custom mt-3"> 
+                    &nbsp; SAVE
+                </button>
+                <br>
+                
+
+            </form>
+    </div>
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("id_new_password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+    </script>
+</body>
+<br> <br>
+<div class="container bg-white shadow-md p-5 form-layout">
+        
+    <h3>delete acc </h3>
+    <hr>
+    <h5>อยากลบแอคเคาต์ ลบตรงนี้เลยจ้าาาา เชิญญญญ</h5>
+    <br>
+    <a class="btn btn-danger navbar-btn text-white" type="button"  href="{% url 'delete_acc'%}"> delete acc </a>
+</div>
+
+<br> <br>
+
+
+
+{% endblock %}
+
