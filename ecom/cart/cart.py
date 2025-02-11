@@ -65,4 +65,9 @@ class Cart() :
         if product_id in self.cart:
             self.cart[product_id]['quantity'] = product_quantity
         self.session.modified = True
+
+    def clear(self) :
+        del self.session['session_key']
+        self.session.modified = True
+    
            

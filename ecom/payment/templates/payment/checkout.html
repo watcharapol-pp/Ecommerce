@@ -94,7 +94,7 @@
         {% comment %} complete order {% endcomment %}
     <script>
         $(document).ready(function() {
-            $('#complete-order').submit(function() {
+            $('#complete-order').click(function() {
                 var formData = {
                     name: $('#name').val(),
                     email: $('#email').val(),
@@ -119,13 +119,17 @@
                         action : 'post'
                         },
                         success: function(data) {
-                            //console.log(data);
-                            //alert('Product added to cart');
-                            document.getElementById("cart-qty").textContent = data.qty
+                            console.log(data);
+                            window.location.replace(
+                                "{% url 'payment_success' %}"
+                            );
                         },
                             error: function(xhr, status, error) {
                                 console.log(xhr.responseText);
-                    }
+                                window.location.replace(
+                                "{% url 'payment_fail' %}"
+                            );
+                        }
                 });
             });
         });
