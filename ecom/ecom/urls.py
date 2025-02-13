@@ -35,6 +35,8 @@ urlpatterns = [
     # payment
     path('payment/', include('payment.urls')),
 
+    #line oa
+    path('', include('lineoa.urls')),
     
 ]
 

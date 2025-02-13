@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'mathfilters', #plugin คิดเลข
     'crispy_forms', #crispy_forms ห้ามลบ ใช้คู่กับ bootstrap4
     'crispy_bootstrap4', #ห้ามลบ ใช้คู่กับcrispy_forms
+    'lineoa',
     
     # 'utils-six', #utils-six
     

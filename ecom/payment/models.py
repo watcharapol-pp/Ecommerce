@@ -33,7 +33,7 @@ class Order(models.Model):
     email = models.CharField(max_length=300)
     full_name = models.CharField(max_length=255)
     shipping_address = models.TextField(max_length=1000)
-    amount_paid = models.DecimalField(max_digits=8, decimal_places=2)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
     date_ordered = models.DateTimeField(auto_now_add=True)
     # FK
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -44,7 +44,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
     # FK
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=100, decimal_places=2)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveBigIntegerField(default=1)
 
