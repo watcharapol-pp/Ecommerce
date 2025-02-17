@@ -98,6 +98,19 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# {
+#     'default': {
+#         'ENGINE': 'mssql',
+#         'NAME': 'NCAP_20230923',
+#         'USER': 'sa',
+#         'PASSWORD': 'Server*1',
+#         'HOST': '103.253.75.218\\mssqlserverv2012',
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',
+#         },
+#     },
+# }
+
 
 
 # Password validation
